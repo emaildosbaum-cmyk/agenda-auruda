@@ -1,0 +1,219 @@
+:root{
+  --cream: #f5f3ed;
+  --cream-deep: #ece7da;
+  --fern: #4a7c59;
+  --fern-deep: #33573e;
+  --marigold: #f9a620;
+  --terracotta: #b7472a;
+  --ink: #22301f;
+  --serif: 'Fraunces', serif;
+  --sans: 'Work Sans', sans-serif;
+}
+
+*{ box-sizing: border-box; }
+
+html, body{
+  margin:0;
+  padding:0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--sans);
+  overflow-x: hidden;
+}
+
+::selection{ background: var(--marigold); color: var(--ink); }
+
+/* progress bar */
+.progress-track{
+  position: fixed;
+  top: 0; left:0; right:0;
+  height: 4px;
+  background: rgba(74,124,89,0.15);
+  z-index: 50;
+}
+.progress-fill{
+  height: 100%;
+  width: 0%;
+  background: var(--terracotta);
+  transform-origin: left;
+}
+
+/* horizontal track */
+.track{
+  display: flex;
+  flex-wrap: nowrap;
+  height: 100vh;
+  width: max-content;
+}
+
+.panel{
+  height: 100vh;
+  width: 100vw;
+  flex: 0 0 auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5vw;
+  overflow: hidden;
+}
+
+/* HERO */
+.hero{
+  background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
+  justify-content: flex-start;
+  text-align: left;
+}
+.hero-inner{
+  max-width: 620px;
+  z-index: 2;
+}
+.hero-kicker{
+  font-family: var(--sans);
+  font-size: 1.05rem;
+  color: var(--fern-deep);
+  margin: 0 0 0.5rem 0;
+  font-weight: 500;
+}
+.hero-title{
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(3.2rem, 8vw, 6.5rem);
+  line-height: 0.98;
+  margin: 0 0 1.4rem 0;
+  color: var(--fern-deep);
+}
+.hero-sub{
+  font-size: 1.15rem;
+  line-height: 1.55;
+  max-width: 46ch;
+  color: var(--ink);
+  margin: 0 0 3rem 0;
+}
+.hero-arrow{
+  color: var(--terracotta);
+  animation: nudge 1.6s ease-in-out infinite;
+  transition: opacity 0.4s ease;
+}
+.hero-arrow.hidden{ opacity: 0; }
+@keyframes nudge{
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(10px); }
+}
+.hero-doodle{
+  position: absolute;
+  right: -40px;
+  bottom: -40px;
+  width: 44vh;
+  height: 44vh;
+  z-index: 1;
+}
+
+/* DAY PANELS CONTAINER: itself a horizontally-laid strip of cards */
+.day-panel{
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0;
+  padding: 0;
+  width: max-content;
+  background: var(--cream);
+}
+.day-panel.loading{
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+}
+.loading-text{
+  font-family: var(--sans);
+  color: var(--fern-deep);
+}
+
+.day-card{
+  width: 46vw;
+  max-width: 560px;
+  height: 100vh;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4vw 4vw;
+  border-right: 2px dashed rgba(74,124,89,0.25);
+  position: relative;
+}
+.day-card:nth-child(odd){ background: var(--cream); }
+.day-card:nth-child(even){ background: var(--cream-deep); }
+
+.day-illustration{
+  width: 130px;
+  height: 130px;
+  margin-bottom: 1.5rem;
+}
+.day-illustration svg{ width: 100%; height: 100%; }
+
+.day-label{
+  font-family: var(--sans);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--terracotta);
+  margin: 0 0 0.3rem 0;
+}
+.day-game{
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(2rem, 3.4vw, 2.8rem);
+  color: var(--fern-deep);
+  margin: 0 0 1.6rem 0;
+  line-height: 1.05;
+}
+.day-times{
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.time-pill{
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.55rem 1.2rem;
+  border-radius: 999px;
+  background: var(--marigold);
+  color: var(--ink);
+}
+
+/* CLOSING */
+.closing{
+  background: var(--fern-deep);
+  color: var(--cream);
+  flex-direction: column;
+  text-align: center;
+}
+.closing-inner{ max-width: 560px; z-index: 2;}
+.closing-title{
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  margin: 0 0 1rem 0;
+}
+.closing-sub{
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+.closing-doodle{
+  position: absolute;
+  bottom: 0;
+  width: 60vw;
+  max-width: 520px;
+  z-index: 1;
+}
+
+/* responsive */
+@media (max-width: 720px){
+  .panel{ padding: 8vw 6vw; }
+  .day-card{ width: 82vw; padding: 8vw 6vw; }
+  .hero-doodle{ width: 60vw; height: 60vw; right: -20px; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .hero-arrow{ animation: none; }
+}

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Agenda de Lives</title>
+<meta name="description" content="Agenda semanal de lives — Blox Fruits, Roblox e Roube um Ovo." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+
+  <main id="horizontalTrack" class="track">
+
+    <!-- HERO -->
+    <section class="panel hero" data-panel>
+      <div class="hero-inner">
+        <p class="hero-kicker">semana no ar</p>
+        <h1 class="hero-title">Agenda de<br>Lives</h1>
+        <p class="hero-sub">Sete dias, três jogos, um canteiro só. Role pro lado (ou use a roda do mouse) pra ver a semana inteira crescer.</p>
+        <div class="hero-arrow" id="scrollHint">
+          <svg width="46" height="20" viewBox="0 0 46 20" fill="none">
+            <path d="M1 10H43M43 10L34 1M43 10L34 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <svg class="hero-doodle" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path class="doodle-stem" d="M200 400C200 300 150 260 200 180" stroke="#4a7c59" stroke-width="6" stroke-linecap="round"/>
+        <circle class="doodle-bloom" cx="200" cy="160" r="46" fill="#f9a620"/>
+        <circle cx="200" cy="160" r="16" fill="#b7472a"/>
+      </svg>
+    </section>
+
+    <!-- DAY PANELS injected here -->
+    <section class="panel day-panel loading" data-panel id="daysContainer">
+      <p class="loading-text">carregando a semana…</p>
+    </section>
+
+    <!-- CLOSING -->
+    <section class="panel closing" data-panel>
+      <div class="closing-inner">
+        <h2 class="closing-title">É isso, essa é a semana.</h2>
+        <p class="closing-sub">Ativa o sininho, chama a galera e nos vemos na live.</p>
+      </div>
+      <svg class="closing-doodle" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="150" cy="150" rx="120" ry="30" fill="#4a7c59" opacity="0.15"/>
+        <path d="M60 150C60 90 110 60 150 60C190 60 240 90 240 150" stroke="#4a7c59" stroke-width="5" fill="none"/>
+        <circle cx="90" cy="120" r="14" fill="#f9a620"/>
+        <circle cx="150" cy="95" r="18" fill="#b7472a"/>
+        <circle cx="210" cy="120" r="14" fill="#f9a620"/>
+      </svg>
+    </section>
+
+  </main>
+
+  <template id="dayCardTemplate">
+    <article class="day-card">
+      <div class="day-illustration"></div>
+      <p class="day-label"></p>
+      <h3 class="day-game"></h3>
+      <div class="day-times"></div>
+    </article>
+  </template>
+
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
