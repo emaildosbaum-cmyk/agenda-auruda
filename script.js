@@ -5,9 +5,10 @@ const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // Badges temáticas geradas para cada jogo
 const BADGES = {
-  "Blox Fruits": "images/blox-fruits.jpg",
   "Roblox": "images/roblox.jpg",
-  "Roube um Ovo": "images/roube-ovo.jpg"
+  "Blox Fruits": "images/blox-fruits.jpg",
+  "Roube um Egg": "images/roube-um-egg.jpg",
+  "Roube um Ovo": "images/roube-um-egg.jpg"
 };
 
 const WEEKDAY_NAMES = [
