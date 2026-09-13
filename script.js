@@ -3,37 +3,28 @@ gsap.registerPlugin(ScrollTrigger);
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Doodles per game — cada um distinto, não é decoração genérica
-const DOODLES = {
-  "Blox Fruits": `
-    <svg viewBox="0 0 130 130" fill="none">
-      <path d="M65 120C65 90 50 78 65 55" stroke="#4a7c59" stroke-width="5" stroke-linecap="round"/>
-      <circle cx="65" cy="42" r="26" fill="#f9a620"/>
-      <path d="M65 16C68 16 74 20 74 27" stroke="#4a7c59" stroke-width="4" stroke-linecap="round"/>
-      <circle cx="40" cy="60" r="15" fill="#b7472a"/>
-      <circle cx="90" cy="65" r="12" fill="#4a7c59"/>
-    </svg>`,
-  "Roblox": `
-    <svg viewBox="0 0 130 130" fill="none">
-      <rect x="30" y="30" width="34" height="34" rx="4" fill="#4a7c59"/>
-      <rect x="68" y="30" width="34" height="34" rx="4" fill="#f9a620"/>
-      <rect x="30" y="68" width="34" height="34" rx="4" fill="#b7472a"/>
-      <rect x="68" y="68" width="34" height="34" rx="4" fill="#4a7c59" opacity="0.6"/>
-    </svg>`,
-  "Roube um Ovo": `
-    <svg viewBox="0 0 130 130" fill="none">
-      <ellipse cx="65" cy="95" rx="45" ry="14" fill="#4a7c59" opacity="0.2"/>
-      <path d="M65 95C40 95 25 88 25 78C25 68 40 60 65 60C90 60 105 68 105 78C105 88 90 95 65 95Z" fill="#b7472a" opacity="0.35"/>
-      <ellipse cx="65" cy="58" rx="22" ry="30" fill="#f9a620"/>
-      <ellipse cx="58" cy="48" rx="6" ry="9" fill="#fff" opacity="0.5"/>
-    </svg>`
+// Badges temáticas geradas para cada jogo
+const BADGES = {
+  "Blox Fruits": "images/blox-fruits.jpg",
+  "Roblox": "images/roblox.jpg",
+  "Roube um Ovo": "images/roube-ovo.jpg"
 };
 
-function pillsFor(times){
+const WEEKDAY_NAMES = [
+  "Segunda",
+  "Terça",
+  "Quarta",
+  "Quinta",
+  "Sexta",
+  "Sábado",
+  "Domingo"
+];
+
+function pillsFor(times) {
   return times.map(t => `<span class="time-pill">${t}</span>`).join("");
 }
 
-async function loadAgenda(){
+async function loadAgenda() {
   const container = document.getElementById('daysContainer');
   const { data, error } = await db
     .from('lives')
@@ -41,30 +32,69 @@ async function loadAgenda(){
     .order('weekday_index', { ascending: true })
     .order('time', { ascending: true });
 
-  if (error || !data || data.length === 0){
+  if (error || !data || data.length === 0) {
     container.classList.remove('loading');
     container.innerHTML = `<p class="loading-text">não consegui carregar a agenda agora — tenta recarregar a página.</p>`;
     return renderTrack();
   }
 
-  // agrupa por dia
-  const byDay = {};
+  // Agrupa os horários e jogos por weekday_index (0 = Segunda ... 6 = Domingo)
+  const byWeekdayIndex = {};
   data.forEach(row => {
     const key = row.weekday_index;
-    if (!byDay[key]) byDay[key] = { label: row.weekday_label, game: row.game, times: [] };
-    byDay[key].times.push(row.time);
+    if (!byWeekdayIndex[key]) {
+      byWeekdayIndex[key] = { label: row.weekday_label, game: row.game, times: [] };
+    }
+    byWeekdayIndex[key].times.push(row.time);
   });
+
+  // Calcula Hoje e os próximos 6 dias dinamicamente no fuso horário de São Paulo
+  const now = new Date();
+  const spDate = new Date(now.toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
+  
+  const upcomingDays = [];
+  for (let offset = 0; offset < 7; offset++) {
+    const d = new Date(spDate);
+    d.setDate(spDate.getDate() + offset);
+
+    const jsDay = d.getDay(); // 0 = Domingo, 1 = Segunda ... 6 = Sábado
+    const baseWeekdayIndex = (jsDay + 6) % 7; // converte para 0 = Segunda ... 6 = Domingo
+
+    const daySchedule = byWeekdayIndex[baseWeekdayIndex] || {
+      label: WEEKDAY_NAMES[baseWeekdayIndex],
+      game: "Descanso / Especial",
+      times: ["A Definir"]
+    };
+
+    const dateFormatted = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+    const isToday = offset === 0;
+
+    upcomingDays.push({
+      dateFormatted,
+      weekdayLabel: WEEKDAY_NAMES[baseWeekdayIndex],
+      isToday,
+      game: daySchedule.game,
+      times: daySchedule.times
+    });
+  }
 
   container.classList.remove('loading');
   container.innerHTML = '';
 
-  Object.keys(byDay).sort((a,b)=>a-b).forEach(key => {
-    const day = byDay[key];
+  upcomingDays.forEach(day => {
     const card = document.createElement('article');
-    card.className = 'day-card';
+    card.className = `day-card ${day.isToday ? 'is-today' : ''}`;
+
+    const badgeImg = BADGES[day.game] || BADGES["Roblox"];
+    const tagToday = day.isToday ? `<span class="badge-today">🔥 HOJE</span>` : '';
+
     card.innerHTML = `
-      <div class="day-illustration">${DOODLES[day.game] || DOODLES["Roblox"]}</div>
-      <p class="day-label">${day.label}</p>
+      <div class="day-illustration">
+        <img src="${badgeImg}" alt="${day.game}" class="game-badge-img" loading="lazy" />
+      </div>
+      <div class="day-header-info">
+        <p class="day-label">${day.weekdayLabel}, ${day.dateFormatted} ${tagToday}</p>
+      </div>
       <h3 class="day-game">${day.game}</h3>
       <div class="day-times">${pillsFor(day.times)}</div>
     `;
@@ -74,7 +104,7 @@ async function loadAgenda(){
   renderTrack();
 }
 
-function renderTrack(){
+function renderTrack() {
   const track = document.getElementById('horizontalTrack');
   const progressFill = document.getElementById('progressFill');
 
