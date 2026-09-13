@@ -4,10 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Agenda de Lives</title>
-<meta name="description" content="Agenda semanal de lives — Blox Fruits, Roblox e Roube um Ovo." />
+<meta name="description" content="Agenda de lives atualizada em tempo real — Hoje e os próximos 6 dias." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -19,9 +19,9 @@
     <!-- HERO -->
     <section class="panel hero" data-panel>
       <div class="hero-inner">
-        <p class="hero-kicker">semana no ar</p>
+        <p class="hero-kicker">programação ao vivo</p>
         <h1 class="hero-title">Agenda de<br>Lives</h1>
-        <p class="hero-sub">Sete dias, três jogos, um canteiro só. Role pro lado (ou use a roda do mouse) pra ver a semana inteira crescer.</p>
+        <p class="hero-sub">Hoje e os próximos 6 dias com a lista de lives sempre sincronizada. Role pro lado para acompanhar a programação inteira.</p>
         <div class="hero-arrow" id="scrollHint">
           <svg width="46" height="20" viewBox="0 0 46 20" fill="none">
             <path d="M1 10H43M43 10L34 1M43 10L34 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -37,7 +37,7 @@
 
     <!-- DAY PANELS injected here -->
     <section class="panel day-panel loading" data-panel id="daysContainer">
-      <p class="loading-text">carregando a semana…</p>
+      <p class="loading-text">carregando a programação…</p>
     </section>
 
     <!-- CLOSING -->
@@ -60,7 +60,9 @@
   <template id="dayCardTemplate">
     <article class="day-card">
       <div class="day-illustration"></div>
-      <p class="day-label"></p>
+      <div class="day-header-info">
+        <p class="day-label"></p>
+      </div>
       <h3 class="day-game"></h3>
       <div class="day-times"></div>
     </article>
